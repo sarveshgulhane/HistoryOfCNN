@@ -1,0 +1,11 @@
+# uv environment
+.venv
+.python-version
+pyproject.toml
+uv.lock
+
+#folders
+.data
+.models
+__pycache__/
+*.pyc

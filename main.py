@@ -2,12 +2,10 @@ import argparse
 import torch.nn as nn
 import torch.optim as optim
 
-# Assuming models and utils are importable
 from nets import LeNet5, AlexNet, VGG16
-from utils.data_loader import get_dataloaders
-from utils.train_eval_save import train_and_save_model
+from utils import get_dataloaders, train_and_save_model
 
-# Dictionary mapping model name strings to their class constructors
+
 MODEL_FACTORY = {
     "lenet5": LeNet5,
     "alexnet": AlexNet,
@@ -78,12 +76,12 @@ def main():
 
     args = parser.parse_args()
 
-    # 1. Model Selection and Instantiation
+    # Model Selection and Instantiation
     ModelClass = MODEL_FACTORY[args.model_name]
     print(f"--- Initializing Model: {args.model_name.upper()} ---")
     model = ModelClass(num_classes=args.num_classes)
 
-    # 2. Setup Optimizer with Command-Line Args
+    # Setup Optimizer with Command-Line Args
     optimizer = optim.SGD(
         model.parameters(),
         lr=args.lr,
@@ -91,20 +89,19 @@ def main():
         weight_decay=args.weight_decay,
     )
 
-    # 3. Setup Loss Function and Data Loaders
+    # Setup Loss Function and Data Loaders
     loss_fn = nn.CrossEntropyLoss()
 
     data_loader = get_dataloaders(
         dataset_name=args.dataset, batch_size=args.batch_size
     )
 
-    # 4. Define Save Path
+    # Define Save Path
     save_path = f".models/{args.model_name}.pth"
     print(
         f"Training for {args.epochs} epochs with LR={args.lr}, Batch Size={args.batch_size}"
     )
 
-    # 5. Run Training
     train_and_save_model(
         model=model,
         epochs=args.epochs,

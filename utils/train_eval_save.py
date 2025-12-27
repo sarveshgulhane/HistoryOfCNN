@@ -3,7 +3,6 @@ import torch
 from tqdm import tqdm
 
 
-# Check if GPU is available
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 

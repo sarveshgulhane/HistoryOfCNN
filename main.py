@@ -2,7 +2,7 @@ import argparse
 import torch.nn as nn
 import torch.optim as optim
 
-from nets import LeNet5, AlexNet, VGG16
+from nets import LeNet5, AlexNet, VGG16, GoogLeNet
 from utils import get_dataloaders, train_and_save_model
 
 
@@ -10,6 +10,7 @@ MODEL_FACTORY = {
     "lenet5": LeNet5,
     "alexnet": AlexNet,
     "vgg16": VGG16,
+    "googlenet": GoogLeNet,
 }
 
 
@@ -82,14 +83,16 @@ def main():
     model = ModelClass(num_classes=args.num_classes)
 
     # Setup Optimizer with Command-Line Args
+    # SGD is best for CNNs most of the time
     optimizer = optim.SGD(
-        model.parameters(),
+        params=model.parameters(),
         lr=args.lr,
         momentum=args.momentum,
         weight_decay=args.weight_decay,
     )
 
     # Setup Loss Function and Data Loaders
+    # we are only doing Multi-class classification
     loss_fn = nn.CrossEntropyLoss()
 
     data_loader = get_dataloaders(

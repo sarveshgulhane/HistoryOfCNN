@@ -3,7 +3,6 @@ from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 
 
-# Check if GPU is available
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
